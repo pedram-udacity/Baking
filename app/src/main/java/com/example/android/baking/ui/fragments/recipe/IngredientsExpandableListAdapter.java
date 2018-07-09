@@ -1,4 +1,4 @@
-package com.example.android.baking.ui;
+package com.example.android.baking.ui.fragments.recipe;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -9,38 +9,38 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
 import com.example.android.baking.R;
-import com.example.android.baking.model.BakingStep;
+import com.example.android.baking.model.Ingredient;
 
 import java.util.List;
 
-public class StepsExpandableListAdapter extends BaseExpandableListAdapter {
+public class IngredientsExpandableListAdapter extends BaseExpandableListAdapter {
 
     private Context mContext;
-    private List<BakingStep> mBakingSteps;
+    private List<Ingredient> mIngredients;
 
-    public StepsExpandableListAdapter(Context aContext, List<BakingStep> aBakingSteps) {
+    public IngredientsExpandableListAdapter(Context aContext, List<Ingredient> aIngredients) {
         mContext = aContext;
-        mBakingSteps = aBakingSteps;
+        mIngredients = aIngredients;
     }
 
     @Override
     public int getGroupCount() {
-        return mBakingSteps.size();
+        return 1; // This list view is used for Ingredients and there is always one group for Ingredients.
     }
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return 1; // For BakingStep the Description is the child and it is always one.
+        return mIngredients.size();
     }
 
     @Override
     public Object getGroup(int groupPosition) {
-        return mBakingSteps.get(groupPosition);
+        return mIngredients;
     }
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        return mBakingSteps.get(groupPosition).getDescription();
+        return mIngredients.get(childPosition);
     }
 
     @Override
@@ -60,17 +60,16 @@ public class StepsExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-        BakingStep bakingStep = (BakingStep) getGroup(groupPosition);
-        String headerTitle = bakingStep.getShortDescription();
+//        Ingredient ingredient = (Ingredient) getGroup(groupPosition);
+        String headerTitle = mContext.getString(R.string.ingredients_card);
 
         if (convertView == null) {
             LayoutInflater layoutInflater = (LayoutInflater) this.mContext
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = layoutInflater.inflate(R.layout.list_item_baking_step_group, null);
+            convertView = layoutInflater.inflate(R.layout.list_item_ingredients_group, null);
         }
 
-        TextView lblListHeader = (TextView) convertView
-                .findViewById(R.id.baking_step_group);
+        TextView lblListHeader = convertView.findViewById(R.id.ingredients_group);
         lblListHeader.setTypeface(null, Typeface.BOLD);
         lblListHeader.setText(headerTitle);
 
@@ -79,7 +78,8 @@ public class StepsExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        final String expandedListText = (String) getChild(groupPosition, childPosition);
+        Ingredient ingredient = (Ingredient) getChild(groupPosition, childPosition);
+        final String expandedListText = String.format(mContext.getString(R.string.format_ingredients), ingredient.getIngredient(), String.valueOf(ingredient.getQuantity()), ingredient.getMeasure());
         if (convertView == null) {
             LayoutInflater layoutInflater = (LayoutInflater) this.mContext
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -93,6 +93,6 @@ public class StepsExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
-        return true;
+        return false;
     }
 }

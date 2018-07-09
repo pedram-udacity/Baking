@@ -10,7 +10,7 @@ public class Recipe implements Parcelable {
     private int id;
     private String name;
     private ArrayList<Ingredient> ingredients;
-    private ArrayList<BakingStep> bakingSteps;
+    private ArrayList<BakingStep> steps;
     private int servings;
     private String image;
 
@@ -22,7 +22,7 @@ public class Recipe implements Parcelable {
         id = in.readInt();
         name = in.readString();
         ingredients = in.createTypedArrayList(Ingredient.CREATOR);
-        bakingSteps = in.createTypedArrayList(BakingStep.CREATOR);
+        steps = in.createTypedArrayList(BakingStep.CREATOR);
         servings = in.readInt();
         image = in.readString();
     }
@@ -32,7 +32,7 @@ public class Recipe implements Parcelable {
         dest.writeInt(id);
         dest.writeString(name);
         dest.writeTypedList(ingredients);
-        dest.writeTypedList(bakingSteps);
+        dest.writeTypedList(steps);
         dest.writeInt(servings);
         dest.writeString(image);
     }
@@ -78,12 +78,12 @@ public class Recipe implements Parcelable {
         ingredients = aIngredients;
     }
 
-    public ArrayList<BakingStep> getBakingSteps() {
-        return bakingSteps;
+    public ArrayList<BakingStep> getSteps() {
+        return steps;
     }
 
-    public void setBakingSteps(ArrayList<BakingStep> aBakingSteps) {
-        bakingSteps = aBakingSteps;
+    public void setSteps(ArrayList<BakingStep> aSteps) {
+        steps = aSteps;
     }
 
     public int getServings() {

@@ -1,4 +1,4 @@
-package com.example.android.baking.ui;
+package com.example.android.baking.ui.activities.main;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,9 +14,11 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.android.baking.R;
 import com.example.android.baking.model.Recipe;
-import com.example.android.baking.utilities.JsonUtils;
+import com.example.android.baking.ui.activities.recipe.RecipeActivity;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,8 +57,10 @@ public class MainActivity extends AppCompatActivity implements RecipesAdapter.Re
         Response.Listener<String> stringListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                ArrayList<Recipe> recipes = JsonUtils.getRecipesFromJsonString(response);
-                mRecipesAdapter.swapData(recipes);
+                Gson gson = new Gson();
+                Recipe[] recipes = gson.fromJson(response, Recipe[].class);
+                ArrayList<Recipe> recipeArrayList = new ArrayList<>(Arrays.asList(recipes));
+                mRecipesAdapter.swapData(recipeArrayList);
             }
         };
         Response.ErrorListener errorListener = new Response.ErrorListener() {

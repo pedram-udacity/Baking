@@ -3,4 +3,9 @@
     <string name="recipe_name">Exiciting Food</string>
     <string name="ingredients_card">Ingredients</string>
     <string name="step_name">Exciting Step</string>
+
+
+    <string name="format_ingredients">
+        <b>%s:</b> %s %s
+    </string>
 </resources>

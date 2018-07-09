@@ -1,4 +1,4 @@
-package com.example.android.baking.ui;
+package com.example.android.baking.ui.activities.main;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

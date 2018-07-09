@@ -6,10 +6,10 @@ import android.os.Parcelable;
 public class BakingStep implements Parcelable{
 
     private int id;
-    private String short_description;
+    private String shortDescription;
     private String description;
-    private String video_url;
-    private String thumbnail_url;
+    private String videoUrl;
+    private String thumbnailUrl;
 
     public BakingStep() {
         super();
@@ -17,19 +17,19 @@ public class BakingStep implements Parcelable{
 
     protected BakingStep(Parcel in) {
         id = in.readInt();
-        short_description = in.readString();
+        shortDescription = in.readString();
         description = in.readString();
-        video_url = in.readString();
-        thumbnail_url = in.readString();
+        videoUrl = in.readString();
+        thumbnailUrl = in.readString();
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
-        dest.writeString(short_description);
+        dest.writeString(shortDescription);
         dest.writeString(description);
-        dest.writeString(video_url);
-        dest.writeString(thumbnail_url);
+        dest.writeString(videoUrl);
+        dest.writeString(thumbnailUrl);
     }
 
     @Override
@@ -58,11 +58,11 @@ public class BakingStep implements Parcelable{
     }
 
     public String getShortDescription() {
-        return short_description;
+        return shortDescription;
     }
 
     public void setShortDescription(String aShortDescription) {
-        short_description = aShortDescription;
+        shortDescription = aShortDescription;
     }
 
     public String getDescription() {
@@ -74,18 +74,18 @@ public class BakingStep implements Parcelable{
     }
 
     public String getVideoUrl() {
-        return video_url;
+        return videoUrl;
     }
 
     public void setVideoUrl(String aVideoUrl) {
-        video_url = aVideoUrl;
+        videoUrl = aVideoUrl;
     }
 
     public String getThumbnailUrl() {
-        return thumbnail_url;
+        return thumbnailUrl;
     }
 
     public void setThumbnailUrl(String aThumbnailUrl) {
-        thumbnail_url = aThumbnailUrl;
+        thumbnailUrl = aThumbnailUrl;
     }
 }
