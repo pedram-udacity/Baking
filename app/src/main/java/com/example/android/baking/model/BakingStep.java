@@ -8,8 +8,8 @@ public class BakingStep implements Parcelable{
     private int id;
     private String shortDescription;
     private String description;
-    private String videoUrl;
-    private String thumbnailUrl;
+    private String videoURL;
+    private String thumbnailURL;
 
     public BakingStep() {
         super();
@@ -19,8 +19,8 @@ public class BakingStep implements Parcelable{
         id = in.readInt();
         shortDescription = in.readString();
         description = in.readString();
-        videoUrl = in.readString();
-        thumbnailUrl = in.readString();
+        videoURL = in.readString();
+        thumbnailURL = in.readString();
     }
 
     @Override
@@ -28,8 +28,8 @@ public class BakingStep implements Parcelable{
         dest.writeInt(id);
         dest.writeString(shortDescription);
         dest.writeString(description);
-        dest.writeString(videoUrl);
-        dest.writeString(thumbnailUrl);
+        dest.writeString(videoURL);
+        dest.writeString(thumbnailURL);
     }
 
     @Override
@@ -73,19 +73,19 @@ public class BakingStep implements Parcelable{
         description = aDescription;
     }
 
-    public String getVideoUrl() {
-        return videoUrl;
+    public String getVideoURL() {
+        return videoURL;
     }
 
-    public void setVideoUrl(String aVideoUrl) {
-        videoUrl = aVideoUrl;
+    public void setVideoURL(String aVideoURL) {
+        videoURL = aVideoURL;
     }
 
-    public String getThumbnailUrl() {
-        return thumbnailUrl;
+    public String getThumbnailURL() {
+        return thumbnailURL;
     }
 
-    public void setThumbnailUrl(String aThumbnailUrl) {
-        thumbnailUrl = aThumbnailUrl;
+    public void setThumbnailURL(String aThumbnailURL) {
+        thumbnailURL = aThumbnailURL;
     }
 }

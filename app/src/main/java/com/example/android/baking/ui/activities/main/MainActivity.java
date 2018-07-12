@@ -1,6 +1,7 @@
 package com.example.android.baking.ui.activities.main;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -15,6 +16,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.android.baking.R;
 import com.example.android.baking.model.Recipe;
 import com.example.android.baking.ui.activities.recipe.RecipeActivity;
+import com.example.android.baking.utilities.UiUtils;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -29,6 +31,8 @@ public class MainActivity extends AppCompatActivity implements RecipesAdapter.Re
     @BindView(R.id.recipe_rv)
     RecyclerView mRecipeRecyclerView;
 
+    private int mSpanCount = 1;
+
     private RecipesAdapter mRecipesAdapter;
 
     private RequestQueue mRequestQueue;
@@ -42,8 +46,12 @@ public class MainActivity extends AppCompatActivity implements RecipesAdapter.Re
         mRequestQueue = Volley.newRequestQueue(this);
 
         mRecipesAdapter = new RecipesAdapter(this, this);
-        // TODO implement span count
-        GridLayoutManager layoutManager = new GridLayoutManager(this, 1);
+        if ((getResources().getConfiguration().screenLayout &
+                Configuration.SCREENLAYOUT_SIZE_MASK) ==
+                Configuration.SCREENLAYOUT_SIZE_LARGE) {
+            mSpanCount = UiUtils.numberOfColumns(this);
+        }
+        GridLayoutManager layoutManager = new GridLayoutManager(this, mSpanCount);
         mRecipeRecyclerView.setLayoutManager(layoutManager);
         mRecipeRecyclerView.setAdapter(mRecipesAdapter);
         LoadData();

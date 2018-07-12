@@ -8,4 +8,9 @@
     <string name="format_ingredients">
         <b>%s:</b> %s %s
     </string>
+    <string name="guess">Can you guess the composer?</string>
+    <string name="notification_text">Press play to hear the piece!</string>
+    <string name="play">Play</string>
+    <string name="pause">Pause</string>
+    <string name="restart">Restart</string>
 </resources>

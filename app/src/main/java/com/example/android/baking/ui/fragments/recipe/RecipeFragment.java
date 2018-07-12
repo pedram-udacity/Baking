@@ -20,7 +20,7 @@ import timber.log.Timber;
 public class RecipeFragment extends Fragment {
 
     private Recipe mRecipe;
-    private onBakingStepClickListener mCallback;
+    private onBakingStepClickListener mCallbackOnePane;
 
     public void setRecipe(Recipe aRecipe) {
         mRecipe = aRecipe;
@@ -39,7 +39,7 @@ public class RecipeFragment extends Fragment {
         super.onAttach(context);
 
         try {
-            mCallback = (onBakingStepClickListener) context;
+            mCallbackOnePane = (onBakingStepClickListener) context;
         } catch (ClassCastException aE) {
             throw new ClassCastException(context.toString()
                     + " must implement onBakingStepClickListener");
@@ -66,7 +66,7 @@ public class RecipeFragment extends Fragment {
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    mCallback.onBakingStepSelected(position);
+                    mCallbackOnePane.onBakingStepSelected(position);
                 }
             });
 
