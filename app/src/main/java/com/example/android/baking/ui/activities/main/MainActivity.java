@@ -3,6 +3,7 @@ package com.example.android.baking.ui.activities.main;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +17,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.android.baking.R;
 import com.example.android.baking.model.Recipe;
 import com.example.android.baking.ui.activities.recipe.RecipeActivity;
+import com.example.android.baking.utilities.NetworkUtils;
 import com.example.android.baking.utilities.UiUtils;
 import com.google.gson.Gson;
 
@@ -34,8 +36,10 @@ public class MainActivity extends AppCompatActivity implements RecipesAdapter.Re
     private int mSpanCount = 1;
 
     private RecipesAdapter mRecipesAdapter;
+    private ArrayList<Recipe> mRecipeArrayList;
 
     private RequestQueue mRequestQueue;
+    private String INSTANCE_STATE_RECIPE_ARRAY_LIST = "instance-state-recipe-array-list";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +47,7 @@ public class MainActivity extends AppCompatActivity implements RecipesAdapter.Re
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        mRequestQueue = Volley.newRequestQueue(this);
-
+        // If the device has a large screen(ie. a tablet) then calculate the Span Count otherwise Span Count is one.
         mRecipesAdapter = new RecipesAdapter(this, this);
         if ((getResources().getConfiguration().screenLayout &
                 Configuration.SCREENLAYOUT_SIZE_MASK) ==
@@ -54,32 +57,61 @@ public class MainActivity extends AppCompatActivity implements RecipesAdapter.Re
         GridLayoutManager layoutManager = new GridLayoutManager(this, mSpanCount);
         mRecipeRecyclerView.setLayoutManager(layoutManager);
         mRecipeRecyclerView.setAdapter(mRecipesAdapter);
-        LoadData();
+
+        if (savedInstanceState != null) {
+            mRecipeArrayList = savedInstanceState.getParcelableArrayList(INSTANCE_STATE_RECIPE_ARRAY_LIST);
+        }
+        if (mRecipeArrayList == null) {
+            loadData();
+        } else {
+            reloadRecyclerView();
+        }
 
     }
 
-    private void LoadData() {
-//        String url = "http://go.udacity.com/android-baking-app-json";
-        String url = "https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json";
+    private void loadData() {
 
-        Response.Listener<String> stringListener = new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Gson gson = new Gson();
-                Recipe[] recipes = gson.fromJson(response, Recipe[].class);
-                ArrayList<Recipe> recipeArrayList = new ArrayList<>(Arrays.asList(recipes));
-                mRecipesAdapter.swapData(recipeArrayList);
+        if (NetworkUtils.isOnline(this)) {
+
+            mRequestQueue = Volley.newRequestQueue(this);
+
+            String url = NetworkUtils.BAKING_APP_URL;
+
+            Response.Listener<String> stringListener = new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Gson gson = new Gson();
+                    Recipe[] recipes = gson.fromJson(response, Recipe[].class);
+                    mRecipeArrayList = new ArrayList<>(Arrays.asList(recipes));
+                    reloadRecyclerView();
+                }
+            };
+            Response.ErrorListener errorListener = new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                }
+            };
+
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, url, stringListener, errorListener);
+
+            mRequestQueue.add(stringRequest);
+
+        } else {
+            NetworkUtils.showNoNetworkToast(this);
+            if (mRecipeArrayList != null) {
+                reloadRecyclerView();
             }
-        };
-        Response.ErrorListener errorListener = new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-            }
-        };
+        }
+    }
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, stringListener, errorListener);
+    private void reloadRecyclerView() {
+        mRecipesAdapter.swapData(mRecipeArrayList);
+    }
 
-        mRequestQueue.add(stringRequest);
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+        outState.putParcelableArrayList(INSTANCE_STATE_RECIPE_ARRAY_LIST, mRecipeArrayList);
     }
 
     @Override

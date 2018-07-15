@@ -21,6 +21,7 @@
                 android:id="@+id/ingredients_elv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:animateLayoutChanges="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -34,9 +35,9 @@
 
     <ListView
         android:id="@+id/steps_lv"
+        android:divider="@null"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:animateLayoutChanges="true"
- />
+        android:layout_height="match_parent" />
+
 </LinearLayout>
 

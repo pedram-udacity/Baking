@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ public class RecipeFragment extends Fragment {
 
     private Recipe mRecipe;
     private onBakingStepClickListener mCallbackOnePane;
+    private long mLastSelectedId;
 
     public void setRecipe(Recipe aRecipe) {
         mRecipe = aRecipe;
@@ -59,15 +61,26 @@ public class RecipeFragment extends Fragment {
             ExpandableListView expandableListView = rootView.findViewById(R.id.ingredients_elv);
             expandableListView.setAdapter(ingredientsExpandableListAdapter);
 
-            StepsAdapter stepsAdapter = new StepsAdapter(getActivity(), mRecipe.getSteps());
-            ListView listView = rootView.findViewById(R.id.steps_lv);
+            StepsAdapter stepsAdapter = new StepsAdapter(getActivity(), mRecipe.getSteps(), 0);
+            final ListView listView = rootView.findViewById(R.id.steps_lv);
             listView.setAdapter(stepsAdapter);
+
 
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                    for (int i = 0; i < listView.getChildCount(); i++) {
+                        CardView cardView = listView.getChildAt(i).findViewById(R.id.listItemBakingStepsCardView);
+                        if (i == id - parent.getFirstVisiblePosition()) {
+                            cardView.setBackgroundColor(getContext().getResources().getColor(R.color.colorAccent));
+                        } else {
+                            cardView.setBackgroundColor(getContext().getResources().getColor(R.color.md_white_1000));
+                        }
+                    }
                     mCallbackOnePane.onBakingStepSelected(position);
                 }
+
             });
 
 

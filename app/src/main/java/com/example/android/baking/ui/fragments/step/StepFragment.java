@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.example.android.baking.R;
 import com.example.android.baking.model.BakingStep;
+import com.example.android.baking.utilities.NetworkUtils;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
@@ -81,7 +82,6 @@ public class StepFragment extends Fragment
 
     public void setBakingStep(BakingStep aBakingStep) {
         mBakingStep = aBakingStep;
-
     }
 
     public StepFragment() {
@@ -101,7 +101,6 @@ public class StepFragment extends Fragment
 
             mPlayerView = rootView.findViewById(R.id.baking_step_epv);
 
-            initializeMediaSession();
 
             Uri uri = Uri.parse(mBakingStep.getVideoURL());
 
@@ -119,8 +118,12 @@ public class StepFragment extends Fragment
                 }
             }
 
-
-            initializePlayer(uri);
+            if (NetworkUtils.isOnline(getContext())) {
+                initializeMediaSession();
+                initializePlayer(uri);
+            } else {
+                NetworkUtils.showNoNetworkToast(getContext());
+            }
 
         }
         return rootView;
@@ -129,6 +132,7 @@ public class StepFragment extends Fragment
 
     private void initializePlayer(Uri mediaUri) {
         if (mExoPlayer == null) {
+
             // Create an instance of the ExoPlayer.
             TrackSelector trackSelector = new DefaultTrackSelector();
             LoadControl loadControl = new DefaultLoadControl();

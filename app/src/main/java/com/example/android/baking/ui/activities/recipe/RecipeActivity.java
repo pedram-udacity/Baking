@@ -17,9 +17,11 @@ public class RecipeActivity extends AppCompatActivity
         , StepFragment.StepFragmentSaveInstanceListener {
 
     public static final String INTENT_EXTRA_RECIPE = "intent-extra-recipe";
-    public static final String PLAYER_CURRENT_POSITION = "player-current-position";
-
-
+//    public static final String INSTANCE_STATE_PLAYER_CURRENT_POSITION = "instance-state-player-current-position";
+//    public static final String INSTANCE_STATE_LAST_STEP_POSITION = "instance-state-player-current-position";
+//
+//
+//    private int mLastStepPosition;
     private long mPlayerLastPosition = -1;
     private Recipe mRecipe;
 
@@ -47,7 +49,7 @@ public class RecipeActivity extends AppCompatActivity
             mTwoPane = true;
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             StepFragment stepFragment = new StepFragment();
-            // TODO: pass the selected step
+            //
             stepFragment.setBakingStep(mRecipe.getSteps().get(0));
             stepFragment.setListener(this);
             stepFragment.setTwoPane(true);
@@ -65,6 +67,7 @@ public class RecipeActivity extends AppCompatActivity
     @Override
     public void onBakingStepSelected(int position) {
         if (mTwoPane) {
+            mPlayerLastPosition = -1;
             FragmentManager fragmentManager = getSupportFragmentManager();
             StepFragment stepFragment = new StepFragment();
             stepFragment.setBakingStep(mRecipe.getSteps().get(position));
@@ -77,7 +80,8 @@ public class RecipeActivity extends AppCompatActivity
 
         } else {
             Intent intent = new Intent(RecipeActivity.this, StepActivity.class);
-            intent.putExtra(StepActivity.INTENT_EXTRA_STEP, mRecipe.getSteps().get(position));
+            intent.putExtra(StepActivity.INTENT_EXTRA_BAKING_STEPS, mRecipe.getSteps());
+            intent.putExtra(StepActivity.INTENT_EXTRA_BAKING_STEP_POSITION, position);
             startActivity(intent);
         }
     }
@@ -90,6 +94,7 @@ public class RecipeActivity extends AppCompatActivity
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putLong(PLAYER_CURRENT_POSITION, mPlayerLastPosition);
+//        outState.putLong(INSTANCE_STATE_PLAYER_CURRENT_POSITION, mPlayerLastPosition);
+//        outState.putInt(INSTANCE_STATE_LAST_STEP_POSITION, mLastStepPosition);
     }
 }
