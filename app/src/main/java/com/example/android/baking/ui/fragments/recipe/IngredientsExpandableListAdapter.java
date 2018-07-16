@@ -85,8 +85,7 @@ public class IngredientsExpandableListAdapter extends BaseExpandableListAdapter 
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater.inflate(R.layout.list_item_baking_step_child, null);
         }
-        TextView expandedListTextView = (TextView) convertView
-                .findViewById(R.id.baking_step_child);
+        TextView expandedListTextView = convertView.findViewById(R.id.baking_step_child);
         expandedListTextView.setText(expandedListText);
         return convertView;
     }

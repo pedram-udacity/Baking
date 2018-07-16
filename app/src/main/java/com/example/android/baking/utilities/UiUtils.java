@@ -10,10 +10,11 @@ public class UiUtils {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         Activity activity = (Activity) aContext;
         activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int widthDivider = 400;
+        int widthDivider = 500;
         int width = displayMetrics.widthPixels;
         int nColumns = width / widthDivider;
         if (nColumns < 2) return 2; //to keep the grid aspect
         return nColumns;
     }
+
 }

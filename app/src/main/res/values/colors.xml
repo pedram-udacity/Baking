@@ -5,6 +5,7 @@
     <color name="colorAccent">@color/md_orange_700</color>
     <color name="touchSelector">@color/md_blue_50</color>
     <color name="notification_bg">#e91e63</color>
+    <color name="transparent">#00FFFFFF</color>
 
 
 </resources>

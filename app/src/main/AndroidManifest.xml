@@ -19,14 +19,33 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.activities.recipe.RecipeActivity" />
-        <activity android:name=".ui.activities.step.StepActivity"
-            android:launchMode="singleTop"/>
+        <activity
+            android:name=".ui.activities.step.StepActivity"
+            android:launchMode="singleTop" />
+
         <receiver android:name=".ui.fragments.step.StepFragment$MediaReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.MEDIA_BUTTON" />
             </intent-filter>
         </receiver>
+        <receiver android:name=".widget.BakingWidgetProvider">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
 
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/baking_widget_info" />
+        </receiver>
+
+        <activity android:name=".widget.BakingWidgetConfigureActivity">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
+
+        <service android:name="com.example.android.baking.widget.BakingWidgetRemoteViewsService"
+            android:permission="android.permission.BIND_REMOTEVIEWS"/>
     </application>
 
 </manifest>

@@ -56,7 +56,6 @@
                 tools:text="@string/recipe_name"/>
 
 
-
         </android.support.constraint.ConstraintLayout>
 
 

@@ -13,6 +13,7 @@ public class Recipe implements Parcelable {
     private ArrayList<BakingStep> steps;
     private int servings;
     private String image;
+    private String markedToSave;
 
     public Recipe() {
         super();
@@ -25,6 +26,7 @@ public class Recipe implements Parcelable {
         steps = in.createTypedArrayList(BakingStep.CREATOR);
         servings = in.readInt();
         image = in.readString();
+        markedToSave = in.readString();
     }
 
     @Override
@@ -35,6 +37,7 @@ public class Recipe implements Parcelable {
         dest.writeTypedList(steps);
         dest.writeInt(servings);
         dest.writeString(image);
+        dest.writeString(markedToSave);
     }
 
     @Override
@@ -100,6 +103,14 @@ public class Recipe implements Parcelable {
 
     public void setImage(String aImage) {
         image = aImage;
+    }
+
+    public boolean isMarkedToSave() {
+        return markedToSave.equals("true");
+    }
+
+    public void setMarkedToSave(boolean marked_as_favorite) {
+        this.markedToSave = marked_as_favorite + "";
     }
 
 }
