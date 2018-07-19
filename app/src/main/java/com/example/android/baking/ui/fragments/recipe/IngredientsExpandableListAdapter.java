@@ -17,10 +17,12 @@ public class IngredientsExpandableListAdapter extends BaseExpandableListAdapter 
 
     private Context mContext;
     private List<Ingredient> mIngredients;
+    private String mRecipeName;
 
-    public IngredientsExpandableListAdapter(Context aContext, List<Ingredient> aIngredients) {
+    public IngredientsExpandableListAdapter(Context aContext, List<Ingredient> aIngredients, String aRecipeName) {
         mContext = aContext;
         mIngredients = aIngredients;
+        mRecipeName = aRecipeName;
     }
 
     @Override
@@ -62,6 +64,11 @@ public class IngredientsExpandableListAdapter extends BaseExpandableListAdapter 
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
 //        Ingredient ingredient = (Ingredient) getGroup(groupPosition);
         String headerTitle = mContext.getString(R.string.ingredients_card);
+        if (mRecipeName.endsWith("s")) {
+            headerTitle = mRecipeName + "' " + headerTitle;
+        } else {
+            headerTitle = mRecipeName + "'s " + headerTitle;
+        }
 
         if (convertView == null) {
             LayoutInflater layoutInflater = (LayoutInflater) this.mContext

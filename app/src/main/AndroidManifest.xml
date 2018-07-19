@@ -10,7 +10,8 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:launchMode="singleTop">
         <activity android:name=".ui.activities.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,10 +19,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activities.recipe.RecipeActivity" />
+        <activity
+            android:name=".ui.activities.recipe.RecipeActivity"
+            android:parentActivityName=".ui.activities.main.MainActivity"
+            android:launchMode="singleTop">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activities.main.MainActivity" />
+        </activity>
         <activity
             android:name=".ui.activities.step.StepActivity"
-            android:launchMode="singleTop" />
+            android:launchMode="singleTop"
+            android:parentActivityName=".ui.activities.recipe.RecipeActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activities.recipe.RecipeActivity" />
+        </activity>
 
         <receiver android:name=".ui.fragments.step.StepFragment$MediaReceiver">
             <intent-filter>
@@ -44,8 +57,9 @@
             </intent-filter>
         </activity>
 
-        <service android:name="com.example.android.baking.widget.BakingWidgetRemoteViewsService"
-            android:permission="android.permission.BIND_REMOTEVIEWS"/>
+        <service
+            android:name="com.example.android.baking.widget.BakingWidgetRemoteViewsService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
     </application>
 
 </manifest>

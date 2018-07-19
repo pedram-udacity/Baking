@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -138,6 +139,7 @@ public class StepFragment extends Fragment
             LoadControl loadControl = new DefaultLoadControl();
             mExoPlayer = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector, loadControl);
             mPlayerView.setPlayer(mExoPlayer);
+            mPlayerView.setDefaultArtwork(BitmapFactory.decodeResource(getContext().getResources(), R.drawable.ic_launcher));
 
             // Set the ExoPlayer.EventListener to this activity.
             mExoPlayer.addListener(this);

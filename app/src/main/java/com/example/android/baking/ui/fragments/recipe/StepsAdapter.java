@@ -36,18 +36,6 @@ public class StepsAdapter extends ArrayAdapter<BakingStep> {
         TextView desc_tv = convertView.findViewById(R.id.baking_steps_desc_tv);
         desc_tv.setText(bakingStep.getShortDescription());
 
-//        CardView cardView = convertView.findViewById(R.id.listItemBakingStepsCardView);
-//        cardView.setBackgroundColor(getContext().getResources().getColor(R.color.md_blue_grey_100));
-//
-//        convertView.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                CardView cardView = v.findViewById(R.id.listItemBakingStepsCardView);
-//                cardView.setBackgroundColor(getContext().getResources().getColor(R.color.colorAccent));
-//
-//            }
-//        });
 
         return convertView;
     }

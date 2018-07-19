@@ -1,5 +1,6 @@
 package com.example.android.baking.widget;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
@@ -7,6 +8,7 @@ import android.content.Intent;
 import android.widget.RemoteViews;
 
 import com.example.android.baking.R;
+import com.example.android.baking.ui.activities.main.MainActivity;
 
 /**
  * Implementation of App Widget functionality.
@@ -26,6 +28,12 @@ public class BakingWidgetProvider extends AppWidgetProvider {
         Intent intent = new Intent(context, BakingWidgetRemoteViewsService.class);
         intent.putExtra(WIDGET_INTENT_EXTRA_RECIPE_NAME, widgetText);
         views.setRemoteAdapter(R.id.ap_baking_lv, intent);
+
+
+        // Handle clicking on widget to open the app
+        Intent intent1 = new Intent(context, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent1, 0);
+        views.setOnClickPendingIntent(R.id.ap_baking_tv, pendingIntent);
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);

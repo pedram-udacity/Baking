@@ -21,8 +21,7 @@ import timber.log.Timber;
 public class RecipeFragment extends Fragment {
 
     private Recipe mRecipe;
-    private onBakingStepClickListener mCallbackOnePane;
-    private long mLastSelectedId;
+    private onBakingStepClickListener mCallback;
 
     public void setRecipe(Recipe aRecipe) {
         mRecipe = aRecipe;
@@ -41,7 +40,7 @@ public class RecipeFragment extends Fragment {
         super.onAttach(context);
 
         try {
-            mCallbackOnePane = (onBakingStepClickListener) context;
+            mCallback = (onBakingStepClickListener) context;
         } catch (ClassCastException aE) {
             throw new ClassCastException(context.toString()
                     + " must implement onBakingStepClickListener");
@@ -57,7 +56,7 @@ public class RecipeFragment extends Fragment {
 
             Timber.d(mRecipe.getSteps().get(0).getShortDescription());
 
-            IngredientsExpandableListAdapter ingredientsExpandableListAdapter = new IngredientsExpandableListAdapter(getActivity(), mRecipe.getIngredients());
+            IngredientsExpandableListAdapter ingredientsExpandableListAdapter = new IngredientsExpandableListAdapter(getActivity(), mRecipe.getIngredients(), mRecipe.getName());
             ExpandableListView expandableListView = rootView.findViewById(R.id.ingredients_elv);
             expandableListView.setAdapter(ingredientsExpandableListAdapter);
 
@@ -66,6 +65,7 @@ public class RecipeFragment extends Fragment {
             listView.setAdapter(stepsAdapter);
 
 
+            // Highlight selected step and handle onclick
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -78,7 +78,7 @@ public class RecipeFragment extends Fragment {
                             cardView.setBackgroundColor(getContext().getResources().getColor(R.color.md_white_1000));
                         }
                     }
-                    mCallbackOnePane.onBakingStepSelected(position);
+                    mCallback.onBakingStepSelected(position);
                 }
 
             });
