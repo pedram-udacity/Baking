@@ -96,8 +96,8 @@ public class StepFragment extends Fragment
 
         if (mBakingStep != null) {
 
-            TextView descTextView = rootView.findViewById(R.id.baking_step_tv);
-            descTextView.setText(mBakingStep.getDescription());
+            TextView bakingStepTextView = rootView.findViewById(R.id.baking_step_tv);
+            bakingStepTextView.setText(mBakingStep.getDescription());
 
 
             mPlayerView = rootView.findViewById(R.id.baking_step_epv);
@@ -105,8 +105,7 @@ public class StepFragment extends Fragment
 
             Uri uri = Uri.parse(mBakingStep.getVideoURL());
 
-            // Setting the Step text view to GONE and making Exoplayer view full screen
-            TextView bakingStepTextView = rootView.findViewById(R.id.baking_step_tv);
+            // Setting the Step text view to GONE and making Exo player view full screen
 
             if (!mTwoPane) {
                 if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {

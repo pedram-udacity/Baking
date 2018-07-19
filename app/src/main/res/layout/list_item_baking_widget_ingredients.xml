@@ -9,9 +9,10 @@
         android:id="@+id/ap_baking_li_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical|left"
+        android:gravity="center_vertical|start"
         android:background="@color/md_blue_grey_900"
         android:paddingLeft="8dp"
+        android:paddingRight="8dp"
         android:textColor="@color/md_white_1000"
         tools:text="@string/ingredients_card"/>
 

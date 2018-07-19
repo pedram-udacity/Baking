@@ -23,10 +23,7 @@ public class DbUtils {
 
     private static boolean isRecipeAlreadySaved(RecipeDatabase aRecipeDb, Recipe aRecipe) {
         List<Integer> ids = aRecipeDb.recipeDao().checkIfRecipeAlreadySaved(aRecipe.getName());
-        if (ids == null || ids.size() == 0) {
-            return false;
-        }
-        return true;
+        return ids != null && ids.size() != 0;
     }
 
     public static void removeRecipeFromDatabase(RecipeDatabase aRecipeDb, Recipe aRecipe) {

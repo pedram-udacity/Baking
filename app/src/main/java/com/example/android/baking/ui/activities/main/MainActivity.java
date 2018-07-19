@@ -47,8 +47,7 @@ public class MainActivity extends AppCompatActivity
 
     private RecipeDatabase mRecipeDb;
 
-    private RequestQueue mRequestQueue;
-    private String INSTANCE_STATE_RECIPE_ARRAY_LIST = "instance-state-recipe-array-list";
+    private final String INSTANCE_STATE_RECIPE_ARRAY_LIST = "instance-state-recipe-array-list";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +83,7 @@ public class MainActivity extends AppCompatActivity
 
         if (NetworkUtils.isOnline(this)) {
 
-            mRequestQueue = Volley.newRequestQueue(this);
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
 
             String url = NetworkUtils.BAKING_APP_URL;
 
@@ -105,7 +104,7 @@ public class MainActivity extends AppCompatActivity
 
             StringRequest stringRequest = new StringRequest(Request.Method.GET, url, stringListener, errorListener);
 
-            mRequestQueue.add(stringRequest);
+            requestQueue.add(stringRequest);
 
         } else {
             NetworkUtils.showNoNetworkToast(this);

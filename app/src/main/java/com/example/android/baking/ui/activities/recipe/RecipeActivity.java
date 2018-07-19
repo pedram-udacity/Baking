@@ -99,13 +99,6 @@ public class RecipeActivity extends AppCompatActivity
         mPlayerLastPosition = aPlayerPosition;
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-//        outState.putLong(INSTANCE_STATE_PLAYER_CURRENT_POSITION, mPlayerLastPosition);
-//        outState.putInt(INSTANCE_STATE_LAST_STEP_POSITION, mLastStepPosition);
-    }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

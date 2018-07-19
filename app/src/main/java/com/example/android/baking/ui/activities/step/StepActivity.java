@@ -25,9 +25,9 @@ public class StepActivity extends AppCompatActivity
     public static final String INTENT_EXTRA_BAKING_STEPS = "intent-extra-steps";
     public static final String INTENT_EXTRA_BAKING_STEP_POSITION = "intent-extra-step-position";
 
-    public static final String INSTANCE_STATE_PLAYER_CURRENT_POSITION = "instance-state-player-current-position";
-    public static final String INSTANCE_STATE_BAKING_STEPS = "instance-state-baking-steps";
-    public static final String INSTANCE_STATE_BAKING_STEP_POSITION = "instance-state-baking-step-position";
+    private static final String INSTANCE_STATE_PLAYER_CURRENT_POSITION = "instance-state-player-current-position";
+    private static final String INSTANCE_STATE_BAKING_STEPS = "instance-state-baking-steps";
+    private static final String INSTANCE_STATE_BAKING_STEP_POSITION = "instance-state-baking-step-position";
     private static final String INSTANCE_STATE_RECIPE_NAME = "instance-state-recipe-name";
 
 
@@ -110,7 +110,7 @@ public class StepActivity extends AppCompatActivity
         outState.putInt(INSTANCE_STATE_BAKING_STEP_POSITION, mBakingStepPosition);
     }
 
-    public void replaceStepsFragment() {
+    private void replaceStepsFragment() {
         mPlayerLastPosition = -1;
 
         StepFragment stepFragment = new StepFragment();

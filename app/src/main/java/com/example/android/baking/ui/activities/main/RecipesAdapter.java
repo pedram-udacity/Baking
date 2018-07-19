@@ -78,8 +78,8 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.RecipesA
     public class RecipesAdapterViewHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener, View.OnLongClickListener {
 
-        ImageView recipeImageView;
-        TextView recipeTextView;
+        final ImageView recipeImageView;
+        final TextView recipeTextView;
 
         public RecipesAdapterViewHolder(View itemView) {
             super(itemView);

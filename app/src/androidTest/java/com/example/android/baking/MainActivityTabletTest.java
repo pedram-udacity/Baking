@@ -26,8 +26,8 @@ import static org.hamcrest.core.AllOf.allOf;
 
 @RunWith(AndroidJUnit4.class)
 public class MainActivityTabletTest {
-    public static final String RECIPE_NAME = "Cheesecake";
-    public static final String STEP_TEXT = "Scrape down the sides of the pan";
+    private static final String RECIPE_NAME = "Cheesecake";
+    private static final String STEP_TEXT = "Scrape down the sides of the pan";
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);

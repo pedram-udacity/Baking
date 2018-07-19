@@ -23,12 +23,12 @@ public class BakingWidgetConfigureActivity extends Activity {
 
     private static final String PREFS_NAME = "com.example.android.baking.widget.BakingWidgetProvider";
     private static final String PREF_PREFIX_KEY = "appwidget_";
-    int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
+    private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 
     private Spinner mSpinner;
 
 
-    View.OnClickListener mOnClickListener = new View.OnClickListener() {
+    private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
             final Context context = BakingWidgetConfigureActivity.this;
 

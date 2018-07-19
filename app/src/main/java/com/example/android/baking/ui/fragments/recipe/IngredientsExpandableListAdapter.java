@@ -15,9 +15,9 @@ import java.util.List;
 
 public class IngredientsExpandableListAdapter extends BaseExpandableListAdapter {
 
-    private Context mContext;
-    private List<Ingredient> mIngredients;
-    private String mRecipeName;
+    private final Context mContext;
+    private final List<Ingredient> mIngredients;
+    private final String mRecipeName;
 
     public IngredientsExpandableListAdapter(Context aContext, List<Ingredient> aIngredients, String aRecipeName) {
         mContext = aContext;

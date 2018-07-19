@@ -15,8 +15,8 @@ import java.util.List;
 
 public class StepsExpandableListAdapter extends BaseExpandableListAdapter {
 
-    private Context mContext;
-    private List<BakingStep> mBakingSteps;
+    private final Context mContext;
+    private final List<BakingStep> mBakingSteps;
 
     public StepsExpandableListAdapter(Context aContext, List<BakingStep> aBakingSteps) {
         mContext = aContext;
@@ -69,7 +69,7 @@ public class StepsExpandableListAdapter extends BaseExpandableListAdapter {
             convertView = layoutInflater.inflate(R.layout.list_item_baking_step_group, null);
         }
 
-        TextView lblListHeader = (TextView) convertView
+        TextView lblListHeader = convertView
                 .findViewById(R.id.baking_step_group);
         lblListHeader.setTypeface(null, Typeface.BOLD);
         lblListHeader.setText(headerTitle);
@@ -85,7 +85,7 @@ public class StepsExpandableListAdapter extends BaseExpandableListAdapter {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater.inflate(R.layout.list_item_baking_step_child, null);
         }
-        TextView expandedListTextView = (TextView) convertView
+        TextView expandedListTextView = convertView
                 .findViewById(R.id.baking_step_child);
         expandedListTextView.setText(expandedListText);
         return convertView;

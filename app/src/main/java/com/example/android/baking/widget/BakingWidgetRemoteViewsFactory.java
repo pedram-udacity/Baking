@@ -14,7 +14,7 @@ import java.util.List;
 
 public class BakingWidgetRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
-    private Context mContext;
+    private final Context mContext;
     private List<RecipeEntry> mRecipeEntries;
     private final RecipeDatabase mRecipeDatabase;
     private final String mRecipeName;

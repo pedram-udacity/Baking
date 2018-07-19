@@ -26,7 +26,7 @@ import static org.hamcrest.core.AllOf.allOf;
 @RunWith(AndroidJUnit4.class)
 public class RecipeActivityBasicTest {
 
-    public static final String RECIPE_NAME = "Brownies";
+    private static final String RECIPE_NAME = "Brownies";
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);

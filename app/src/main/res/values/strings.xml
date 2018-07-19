@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Baking</string>
-    <string name="recipe_name">Exiciting Food</string>
+    <string name="recipe_name">Exciting Food</string>
     <string name="ingredients_card">Ingredients</string>
     <string name="step_name">Exciting Step</string>
 
@@ -17,6 +17,11 @@
     <string name="add_widget">Add widget</string>
     <string name="configure">Configure</string>
     <string name="select_recipe">Select a recipe</string>
+    <string name="button_prev">Previous Button</string>
+    <string name="button_play">Play Button</string>
+    <string name="button_pause">Pause Button</string>
+    <string name="recipe_image">Recipe Image</string>
+    <string name="button_next">Next Button</string>
 
 
 </resources>
