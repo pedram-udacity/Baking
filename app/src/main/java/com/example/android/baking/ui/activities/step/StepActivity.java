@@ -29,12 +29,14 @@ public class StepActivity extends AppCompatActivity
     private static final String INSTANCE_STATE_BAKING_STEPS = "instance-state-baking-steps";
     private static final String INSTANCE_STATE_BAKING_STEP_POSITION = "instance-state-baking-step-position";
     private static final String INSTANCE_STATE_RECIPE_NAME = "instance-state-recipe-name";
+    private static final String INSTANCE_STATE_BAKING_STEP_PLAY_WHEN_READY_STATE = "instance-state-baking-play-when-ready-state";
 
 
     private ArrayList<BakingStep> mBakingStepArrayList;
     private int mBakingStepPosition;
 
     private long mPlayerLastPosition;
+    private boolean mPlayWhenReadyState;
     private String mRecipeName;
 
 
@@ -55,12 +57,14 @@ public class StepActivity extends AppCompatActivity
             mPlayerLastPosition = savedInstanceState.getLong(INSTANCE_STATE_PLAYER_CURRENT_POSITION, -1);
             mBakingStepArrayList = savedInstanceState.getParcelableArrayList(INSTANCE_STATE_BAKING_STEPS);
             mBakingStepPosition = savedInstanceState.getInt(INSTANCE_STATE_BAKING_STEP_POSITION);
+            mPlayWhenReadyState = savedInstanceState.getBoolean(INSTANCE_STATE_BAKING_STEP_PLAY_WHEN_READY_STATE);
         } else {
             mPlayerLastPosition = -1;
             Intent intentThatStartedThisActivity = getIntent();
             mRecipeName = intentThatStartedThisActivity.getStringExtra(INTENT_EXTRA_RECIPE_NAME);
             mBakingStepArrayList = intentThatStartedThisActivity.getParcelableArrayListExtra(INTENT_EXTRA_BAKING_STEPS);
             mBakingStepPosition = intentThatStartedThisActivity.getIntExtra(INTENT_EXTRA_BAKING_STEP_POSITION, 0);
+            mPlayWhenReadyState = true;
         }
         setTitle(mRecipeName);
 
@@ -77,8 +81,8 @@ public class StepActivity extends AppCompatActivity
         StepFragment stepFragment = new StepFragment();
         stepFragment.setBakingStep(mBakingStepArrayList.get(mBakingStepPosition));
         stepFragment.setTwoPane(false);
-        stepFragment.setListener(this);
         stepFragment.setPlayerLastPosition(mPlayerLastPosition);
+        stepFragment.setPlayWhenReadyState(mPlayWhenReadyState);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
@@ -97,8 +101,9 @@ public class StepActivity extends AppCompatActivity
     }
 
     @Override
-    public void onStepFragmentSaveInstance(long aPlayerPosition) {
+    public void onStepFragmentSaveInstance(long aPlayerPosition, boolean aPlayWhenReadyState) {
         mPlayerLastPosition = aPlayerPosition;
+        mPlayWhenReadyState = aPlayWhenReadyState;
     }
 
     @Override
@@ -108,6 +113,7 @@ public class StepActivity extends AppCompatActivity
         outState.putLong(INSTANCE_STATE_PLAYER_CURRENT_POSITION, mPlayerLastPosition);
         outState.putParcelableArrayList(INSTANCE_STATE_BAKING_STEPS, mBakingStepArrayList);
         outState.putInt(INSTANCE_STATE_BAKING_STEP_POSITION, mBakingStepPosition);
+        outState.putBoolean(INSTANCE_STATE_BAKING_STEP_PLAY_WHEN_READY_STATE, mPlayWhenReadyState);
     }
 
     private void replaceStepsFragment() {
@@ -116,8 +122,8 @@ public class StepActivity extends AppCompatActivity
         StepFragment stepFragment = new StepFragment();
         stepFragment.setBakingStep(mBakingStepArrayList.get(mBakingStepPosition));
         stepFragment.setTwoPane(false);
-        stepFragment.setListener(this);
         stepFragment.setPlayerLastPosition(mPlayerLastPosition);
+        stepFragment.setPlayWhenReadyState(mPlayWhenReadyState);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()

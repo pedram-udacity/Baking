@@ -16,9 +16,8 @@ import java.util.ArrayList;
 
 public class StepsAdapter extends ArrayAdapter<BakingStep> {
 
-    public StepsAdapter(@NonNull Context context, ArrayList<BakingStep> aBakingSteps, int aSelectedPosition) {
+    public StepsAdapter(@NonNull Context context, ArrayList<BakingStep> aBakingSteps) {
         super(context, 0, aBakingSteps);
-        int selectedPosition = aSelectedPosition;
     }
 
     @NonNull

@@ -21,7 +21,10 @@ public class RecipeActivity extends AppCompatActivity
 
     public static final String INTENT_EXTRA_RECIPE = "intent-extra-recipe";
 
+    private static final String INSTANCE_STATE_BAKING_STEP_PLAY_WHEN_READY_STATE = "instance-state-baking-play-when-ready-state";
+
     private long mPlayerLastPosition = -1;
+    private boolean mPlayWhenReadyState;
     private Recipe mRecipe;
 
     // Track whether to display a two-pane or single-pane UI
@@ -42,6 +45,14 @@ public class RecipeActivity extends AppCompatActivity
         Intent intentThatStartedThisActivity = getIntent();
         mRecipe = intentThatStartedThisActivity.getParcelableExtra(INTENT_EXTRA_RECIPE);
 
+
+        if (savedInstanceState != null) {
+            mPlayWhenReadyState = savedInstanceState.getBoolean(INSTANCE_STATE_BAKING_STEP_PLAY_WHEN_READY_STATE);
+        } else {
+            mPlayWhenReadyState = true;
+        }
+
+
         setTitle(mRecipe.getName());
 
         RecipeFragment recipeFragment = new RecipeFragment();
@@ -56,11 +67,10 @@ public class RecipeActivity extends AppCompatActivity
             mTwoPane = true;
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             StepFragment stepFragment = new StepFragment();
-            //
             stepFragment.setBakingStep(mRecipe.getSteps().get(0));
-            stepFragment.setListener(this);
             stepFragment.setTwoPane(true);
             stepFragment.setPlayerLastPosition(mPlayerLastPosition);
+            stepFragment.setPlayWhenReadyState(mPlayWhenReadyState);
             fragmentManager.beginTransaction()
                     .add(R.id.baking_step_container, stepFragment)
                     .commit();
@@ -72,15 +82,21 @@ public class RecipeActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(INSTANCE_STATE_BAKING_STEP_PLAY_WHEN_READY_STATE, mPlayWhenReadyState);
+    }
+
+    @Override
     public void onBakingStepSelected(int position) {
         if (mTwoPane) {
             mPlayerLastPosition = -1;
             FragmentManager fragmentManager = getSupportFragmentManager();
             StepFragment stepFragment = new StepFragment();
             stepFragment.setBakingStep(mRecipe.getSteps().get(position));
-            stepFragment.setListener(this);
             stepFragment.setTwoPane(true);
             stepFragment.setPlayerLastPosition(mPlayerLastPosition);
+            stepFragment.setPlayWhenReadyState(mPlayWhenReadyState);
             fragmentManager.beginTransaction()
                     .replace(R.id.baking_step_container, stepFragment)
                     .commit();
@@ -95,8 +111,9 @@ public class RecipeActivity extends AppCompatActivity
     }
 
     @Override
-    public void onStepFragmentSaveInstance(long aPlayerPosition) {
+    public void onStepFragmentSaveInstance(long aPlayerPosition, boolean aPlayWhenReadyState) {
         mPlayerLastPosition = aPlayerPosition;
+        mPlayWhenReadyState = aPlayWhenReadyState;
     }
 
 

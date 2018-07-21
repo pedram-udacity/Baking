@@ -63,21 +63,23 @@ public class StepFragment extends Fragment
     private StepFragmentSaveInstanceListener mListener;
 
     private long mPlayerLastPosition = -1;
+    private boolean mPlayWhenReadyState;
+    private Uri mUri;
 
     public void setTwoPane(boolean aTwoPane) {
         mTwoPane = aTwoPane;
-    }
-
-    public void setListener(StepFragmentSaveInstanceListener aListener) {
-        mListener = aListener;
     }
 
     public void setPlayerLastPosition(long aPlayerLastPosition) {
         mPlayerLastPosition = aPlayerLastPosition;
     }
 
+    public void setPlayWhenReadyState(boolean aPlayWhenReadyState) {
+        mPlayWhenReadyState = aPlayWhenReadyState;
+    }
+
     public interface StepFragmentSaveInstanceListener {
-        void onStepFragmentSaveInstance(long aPlayerPosition);
+        void onStepFragmentSaveInstance(long aPlayerPosition, boolean aPlayWhenReadyState);
     }
 
 
@@ -93,17 +95,15 @@ public class StepFragment extends Fragment
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_baking_step, container, false);
+        mPlayerView = rootView.findViewById(R.id.baking_step_epv);
 
         if (mBakingStep != null) {
+
+            mUri = Uri.parse(mBakingStep.getVideoURL());
 
             TextView bakingStepTextView = rootView.findViewById(R.id.baking_step_tv);
             bakingStepTextView.setText(mBakingStep.getDescription());
 
-
-            mPlayerView = rootView.findViewById(R.id.baking_step_epv);
-
-
-            Uri uri = Uri.parse(mBakingStep.getVideoURL());
 
             // Setting the Step text view to GONE and making Exo player view full screen
 
@@ -118,16 +118,20 @@ public class StepFragment extends Fragment
                 }
             }
 
-            if (NetworkUtils.isOnline(getContext())) {
-                initializeMediaSession();
-                initializePlayer(uri);
-            } else {
-                NetworkUtils.showNoNetworkToast(getContext());
-            }
+            // initializing player is done in onStart/onResume
 
         }
         return rootView;
 
+    }
+
+    private void initializeMediaSessionAndPlayer() {
+        if (NetworkUtils.isOnline(getContext())) {
+            initializeMediaSession();
+            initializePlayer(mUri);
+        } else {
+            NetworkUtils.showNoNetworkToast(getContext());
+        }
     }
 
     private void initializePlayer(Uri mediaUri) {
@@ -152,7 +156,7 @@ public class StepFragment extends Fragment
                 mExoPlayer.seekTo(mPlayerLastPosition);
             }
 
-            mExoPlayer.setPlayWhenReady(true);
+            mExoPlayer.setPlayWhenReady(mPlayWhenReadyState);
         }
     }
 
@@ -246,23 +250,54 @@ public class StepFragment extends Fragment
             mExoPlayer.release();
             mExoPlayer = null;
         }
+        mMediaSession.setActive(false);
     }
 
-
     @Override
-    public void onPause() {
-        super.onPause();
-        if (mExoPlayer != null) {
-            mListener.onStepFragmentSaveInstance(mExoPlayer.getCurrentPosition());
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            mListener = (StepFragmentSaveInstanceListener) context;
+        } catch (ClassCastException aE) {
+            throw new ClassCastException(context.toString()
+                    + " must implement StepFragmentSaveInstanceListener");
         }
 
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        releasePlayer();
-        mMediaSession.setActive(false);
+    public void onStart() {
+        super.onStart();
+        if (Util.SDK_INT > 23) {
+            initializeMediaSessionAndPlayer();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if ((Util.SDK_INT <= 23 || mExoPlayer == null)) {
+            initializeMediaSessionAndPlayer();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mExoPlayer != null) {
+            mListener.onStepFragmentSaveInstance(mExoPlayer.getCurrentPosition(), mExoPlayer.getPlayWhenReady());
+        }
+        if (Util.SDK_INT <= 23) {
+            releasePlayer();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (Util.SDK_INT > 23) {
+            releasePlayer();
+        }
     }
 
     // ExoPlayer Event Listeners - BEGIN

@@ -60,7 +60,7 @@ public class RecipeFragment extends Fragment {
             ExpandableListView expandableListView = rootView.findViewById(R.id.ingredients_elv);
             expandableListView.setAdapter(ingredientsExpandableListAdapter);
 
-            StepsAdapter stepsAdapter = new StepsAdapter(getActivity(), mRecipe.getSteps(), 0);
+            StepsAdapter stepsAdapter = new StepsAdapter(getActivity(), mRecipe.getSteps());
             final ListView listView = rootView.findViewById(R.id.steps_lv);
             listView.setAdapter(stepsAdapter);
 

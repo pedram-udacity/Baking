@@ -22,20 +22,15 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.RecipesA
     private ArrayList<Recipe> mRecipeArrayList;
 
     private final RecipesAdapterOnClickHandler mRecipesAdapterOnClickHandler;
-    private final RecipesAdapterOnLongClickHandler mRecipesAdapterOnLongClickHandler;
 
     public interface RecipesAdapterOnClickHandler {
         void onClick(Recipe aRecipe);
     }
 
-    public interface RecipesAdapterOnLongClickHandler {
-        void onLongClick(Recipe aRecipe);
-    }
 
-    public RecipesAdapter(Context aContext, RecipesAdapterOnClickHandler aRecipesAdapterOnClickHandler, RecipesAdapterOnLongClickHandler aRecipesAdapterOnLongClickHandler) {
+    public RecipesAdapter(Context aContext, RecipesAdapterOnClickHandler aRecipesAdapterOnClickHandler) {
         mContext = aContext;
         mRecipesAdapterOnClickHandler = aRecipesAdapterOnClickHandler;
-        mRecipesAdapterOnLongClickHandler = aRecipesAdapterOnLongClickHandler;
     }
 
     @NonNull
@@ -76,7 +71,7 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.RecipesA
     }
 
     public class RecipesAdapterViewHolder extends RecyclerView.ViewHolder
-            implements View.OnClickListener, View.OnLongClickListener {
+            implements View.OnClickListener {
 
         final ImageView recipeImageView;
         final TextView recipeTextView;
@@ -89,7 +84,6 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.RecipesA
 
 
             itemView.setOnClickListener(this);
-            itemView.setOnLongClickListener(this);
         }
 
         @Override
@@ -99,12 +93,5 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.RecipesA
             mRecipesAdapterOnClickHandler.onClick(recipe);
         }
 
-        @Override
-        public boolean onLongClick(View v) {
-            int adapterPosition = getAdapterPosition();
-            Recipe recipe = mRecipeArrayList.get(adapterPosition);
-            mRecipesAdapterOnLongClickHandler.onLongClick(recipe);
-            return false;
-        }
     }
 }

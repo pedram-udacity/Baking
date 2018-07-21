@@ -54,6 +54,8 @@ dependencies {
     // Media
     implementation 'com.google.android.exoplayer:exoplayer:r2.2.0'
     implementation 'com.android.support:support-media-compat:27.1.1'
+    implementation 'com.github.rubensousa:previewseekbar:2.0.0'
+    implementation 'com.github.rubensousa:previewseekbar-exoplayer:2.8.1.0'
 
     // Persistence
     def room_version = "1.1.1"

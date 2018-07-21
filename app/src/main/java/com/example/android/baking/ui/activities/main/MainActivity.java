@@ -1,12 +1,9 @@
 package com.example.android.baking.ui.activities.main;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -34,7 +31,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity
-        implements RecipesAdapter.RecipesAdapterOnClickHandler, RecipesAdapter.RecipesAdapterOnLongClickHandler {
+        implements RecipesAdapter.RecipesAdapterOnClickHandler {
 
 
     @BindView(R.id.recipe_rv)
@@ -45,8 +42,6 @@ public class MainActivity extends AppCompatActivity
     private RecipesAdapter mRecipesAdapter;
     private ArrayList<Recipe> mRecipeArrayList;
 
-    private RecipeDatabase mRecipeDb;
-
     private final String INSTANCE_STATE_RECIPE_ARRAY_LIST = "instance-state-recipe-array-list";
 
     @Override
@@ -55,10 +50,8 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        mRecipeDb = RecipeDatabase.getInstance(getApplicationContext());
-
         // If the device has a large screen(ie. a tablet) then calculate the Span Count otherwise Span Count is one.
-        mRecipesAdapter = new RecipesAdapter(this, this, this);
+        mRecipesAdapter = new RecipesAdapter(this, this);
         if ((getResources().getConfiguration().screenLayout &
                 Configuration.SCREENLAYOUT_SIZE_MASK) ==
                 Configuration.SCREENLAYOUT_SIZE_LARGE) {
@@ -94,6 +87,15 @@ public class MainActivity extends AppCompatActivity
                     Recipe[] recipes = gson.fromJson(response, Recipe[].class);
                     mRecipeArrayList = new ArrayList<>(Arrays.asList(recipes));
                     reloadRecyclerView();
+                    AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            for (int i = 0; i < mRecipeArrayList.size(); i++) {
+                                DbUtils.saveRecipeToDataBase(RecipeDatabase.getInstance(getApplicationContext()),
+                                        mRecipeArrayList.get(i));
+                            }
+                        }
+                    });
                 }
             };
             Response.ErrorListener errorListener = new Response.ErrorListener() {
@@ -131,35 +133,4 @@ public class MainActivity extends AppCompatActivity
         startActivity(intent);
     }
 
-    @Override
-    public void onLongClick(final Recipe aRecipe) {
-
-        AlertDialog.Builder builder;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
-        } else {
-            builder = new AlertDialog.Builder(this);
-        }
-        builder.setTitle("Baking")
-                .setMessage("Do you want to save this recipe?")
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                            @Override
-                            public void run() {
-                                DbUtils.saveRecipeToDataBase(mRecipeDb, aRecipe);
-                            }
-                        });
-                    }
-                })
-                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // do nothing
-                    }
-                })
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show();
-
-
-    }
 }
